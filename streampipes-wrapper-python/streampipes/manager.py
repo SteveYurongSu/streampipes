@@ -39,7 +39,7 @@ class ProcessorDispatcher(object):
 
         except KeyError:
             err = "KeyError. processor_id not found"
-            cls.logger.info('{}: {}'.format(err, processor_id))
+            cls.logger.info(f'{err}: {processor_id}')
             return {'status': err}
 
     @classmethod
@@ -58,6 +58,6 @@ class ProcessorDispatcher(object):
 
         except KeyError:
             err = "KeyError. invocation_id not found"
-            cls.logger.info('{}: {}'.format(err,invocation_id))
+            cls.logger.info(f'{err}: {invocation_id}')
 
             return {'status': err}

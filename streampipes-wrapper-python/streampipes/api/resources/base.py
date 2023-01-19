@@ -74,7 +74,7 @@ class Element(FlaskView):
 
     @classmethod
     def _make_path(cls, element_id: str, asset_appendix: str):
-        return element_id + '/' + asset_appendix
+        return f'{element_id}/{asset_appendix}'
 
 
 class InvocableElement(Element):
@@ -126,4 +126,4 @@ class InvocableElement(Element):
 
     @staticmethod
     def _is_debug():
-        return True if os.getenv('SP_DEBUG') == 'true' else False
+        return os.getenv('SP_DEBUG') == 'true'

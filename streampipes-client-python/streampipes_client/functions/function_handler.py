@@ -113,8 +113,8 @@ class FunctionHandler:
         -------
         None
         """
-        messages: Dict[str, AsyncIterator] = dict()
-        contexts: Dict[str, FunctionContext] = dict()
+        messages: Dict[str, AsyncIterator] = {}
+        contexts: Dict[str, FunctionContext] = {}
 
         for stream_id in self.stream_contexts.keys():
             data_stream = self.stream_contexts[stream_id].schema
@@ -127,7 +127,7 @@ class FunctionHandler:
             # Generate the function context
             for streampipes_function in self.stream_contexts[stream_id].functions:
                 function_id = streampipes_function.getFunctionId()[0]
-                if function_id in contexts.keys():
+                if function_id in contexts:
                     contexts[function_id].add_data_stream_schema(stream_id, data_stream)
                 else:
                     contexts[function_id] = FunctionContext(

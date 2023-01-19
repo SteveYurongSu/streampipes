@@ -50,18 +50,13 @@ class Config(object):
     def _create_config_item(self, env_key: str, default, description: str, configuration_scope=None, is_password=None):
         config_item = ConfigItem()
 
-        if env_key is not None:
-            if os.getenv(env_key):
-                env_value = os.getenv(env_key)
-                config_item.value = env_value
-                config_item.value_type = self._check_default_type(env_value)
-            else:
-                config_item.value = default
-                config_item.value_type = self._check_default_type(default)
+        if env_key is not None and os.getenv(env_key):
+            env_value = os.getenv(env_key)
+            config_item.value = env_value
+            config_item.value_type = self._check_default_type(env_value)
         else:
             config_item.value = default
             config_item.value_type = self._check_default_type(default)
-
         config_item.description = description
 
         if configuration_scope is not None:
@@ -70,19 +65,12 @@ class Config(object):
             # TODO: configuration_scope needed? Currently manually set
             config_item.configuration_scope = 'CONTAINER_STARTUP_CONFIG'
 
-        if is_password is not None:
-            config_item.is_password = is_password
-        else:
-            config_item.is_password = False
-
+        config_item.is_password = is_password if is_password is not None else False
         return config_item
 
     @staticmethod
     def _env_or_default(key, default):
-        if key is not None:
-            if os.getenv(key):
-                return os.getenv(key)
-        return default
+        return os.getenv(key) if key is not None and os.getenv(key) else default
 
     @staticmethod
     def _check_default_type(value) -> str:

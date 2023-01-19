@@ -59,7 +59,9 @@ class EventProcessor(object):
             self._DEFAULT_KAFKA_CONSUMER_CONFIG['bootstrap.servers'] = self._bootstrap_servers
             self._DEFAULT_KAFKA_PRODUCER_CONFIG['bootstrap.servers'] = self._bootstrap_servers
 
-        self._DEFAULT_KAFKA_CONSUMER_CONFIG['group.id'] = 'streampipes_python_' + self._invocation_id
+        self._DEFAULT_KAFKA_CONSUMER_CONFIG[
+            'group.id'
+        ] = f'streampipes_python_{self._invocation_id}'
 
         self._producer = Producer(self._DEFAULT_KAFKA_PRODUCER_CONFIG)
         self._consumer = Consumer(self._DEFAULT_KAFKA_CONSUMER_CONFIG)
@@ -68,7 +70,7 @@ class EventProcessor(object):
         self.on_invocation()
 
     def init(self):
-        self.logger.info('start processor {}'.format(self.invocation_id))
+        self.logger.info(f'start processor {self.invocation_id}')
         thread = threading.Thread(target=self._consume, name=self.invocation_id)
         thread.start()
         self._threads['kafka'] = thread
@@ -116,17 +118,17 @@ class EventProcessor(object):
                 continue
             elif msg.error():
                 if msg.error().str() != "Broker: No more messages":
-                    self.logger.error("Consumer error: {}".format(msg.error()))
+                    self.logger.error(f"Consumer error: {msg.error()}")
                     continue
             else:
                 try:
                     # json -> dict
                     event = json.loads(msg.value().decode('utf-8'))
                     if isinstance(event, int):
-                        self.logger.info("Integer not allowed {}".format(event))
+                        self.logger.info(f"Integer not allowed {event}")
                         continue
                 except ValueError as e:
-                    self.logger.info("Not a valid json {}".format(e))
+                    self.logger.info(f"Not a valid json {e}")
                     continue
 
                 self._on_event(event)
@@ -154,7 +156,7 @@ class EventProcessor(object):
     #             raise
 
     def stop(self):
-        self.logger.info('stop processor {}'.format(self.invocation_id))
+        self.logger.info(f'stop processor {self.invocation_id}')
         self._running = False
         self._consumer.close()
         self._producer.flush()

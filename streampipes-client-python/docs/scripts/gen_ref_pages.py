@@ -28,16 +28,9 @@ for path in sorted(Path("streampipes_client").rglob("*.py")):
 
     parts = list(module_path.parts)
 
-    if parts[-1] == "__init__":
+    if parts[-1] in ["__init__", "__version__", "__main__", " "]:
         # parts = parts[:-1]
         continue
-    elif parts[-1] == "__version__":
-        continue
-    elif parts[-1] == "__main__":
-        continue
-    elif parts[-1] == " ":
-        continue
-
     nav[parts] = doc_path.as_posix()
 
     with mkdocs_gen_files.open(full_doc_path, "w+") as fd:
