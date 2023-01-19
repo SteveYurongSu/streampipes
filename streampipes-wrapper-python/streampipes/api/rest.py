@@ -44,6 +44,10 @@ class PipelineElementApi(object):
             DummyInterimsResource.register(self.app, route_base='/')
 
     def run(self, port: int):
-        print('serving API via waitress WSGI server ... http://{}:{}'.format('0.0.0.0', port))
-        threading.Thread(target=serve, args=(self.app,), kwargs={'host': '0.0.0.0', 'port': int(port), '_quiet': True}).start()
+        print(f'serving API via waitress WSGI server ... http://0.0.0.0:{port}')
+        threading.Thread(
+            target=serve,
+            args=(self.app,),
+            kwargs={'host': '0.0.0.0', 'port': port, '_quiet': True},
+        ).start()
 

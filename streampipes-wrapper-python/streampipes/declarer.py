@@ -19,10 +19,10 @@
 class Singleton(type):
     _instances = {}
 
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
-        return cls._instances[cls]
+    def __call__(self, *args, **kwargs):
+        if self not in self._instances:
+            self._instances[self] = super(Singleton, self).__call__(*args, **kwargs)
+        return self._instances[self]
 
 
 class DeclarerSingleton(metaclass=Singleton):
@@ -55,4 +55,4 @@ class DeclarerSingleton(metaclass=Singleton):
         return self.sepa_declarers
 
     def get_base_uri(self):
-        return 'http://' + self.host + ':' + self.port + self.route
+        return f'http://{self.host}:{self.port}{self.route}'

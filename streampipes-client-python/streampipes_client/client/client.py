@@ -199,9 +199,9 @@ class StreamPipesClient:
         }
 
         # sort the endpoints descending based on the number of resources
-        sorted_endpoint_stats = {
-            key: val for key, val in sorted(endpoint_stats.items(), key=lambda item: item[1], reverse=True)
-        }
+        sorted_endpoint_stats = dict(
+            sorted(endpoint_stats.items(), key=lambda item: item[1], reverse=True)
+        )
 
         base_message = (
             f"\nHi there!\n"

@@ -24,5 +24,5 @@ class UnnamedStreamPipesEntity(AbstractStreamPipesEntity):
   def __init__(self):
       pass
   @classmethod
-  def with_elementId(elementId: str):
-    self.elementId = elementId
+  def with_elementId(cls):
+    self.elementId = cls

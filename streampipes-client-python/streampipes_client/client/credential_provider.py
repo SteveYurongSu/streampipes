@@ -120,10 +120,7 @@ class StreamPipesApiKeyCredentials(CredentialProvider):
 
         if username is None or api_key is None:
             raise KeyError(
-                f"Ups, the following environment variables have not been found: "
-                f"{'`' + username_env + '`,' if username is None else ''}"
-                f"{'`' + api_key_env +'`' if api_key is None else ''}. "  # noqa: W291
-                "Please check them to be properly set."
+                f"Ups, the following environment variables have not been found: {f'`{username_env}`,' if username is None else ''}{f'`{api_key_env}`' if api_key is None else ''}. Please check them to be properly set."
             )
 
         return cls(username=username, api_key=api_key)

@@ -82,11 +82,10 @@ class TestMessageIterator:
         return self
 
     async def __anext__(self):
-        if self.i < len(self.test_data) - 1:
-            self.i += 1
-            return TestMessage(self.test_data[self.i])
-        else:
+        if self.i >= len(self.test_data) - 1:
             raise StopAsyncIteration
+        self.i += 1
+        return TestMessage(self.test_data[self.i])
 
 
 class TestFunctionHandler(TestCase):

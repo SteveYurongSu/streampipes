@@ -173,7 +173,7 @@ class APIEndpoint(Endpoint):
         -------
         The URL of the Endpoint
         """
-        return f"{self._parent_client.base_api_path}" f"{'/'.join(api_path for api_path in self._relative_api_path)}"
+        return f"{self._parent_client.base_api_path}{'/'.join(self._relative_api_path)}"
 
     def all(self) -> ResourceContainer:
         """Get all resources of this endpoint provided by the StreamPipes API.

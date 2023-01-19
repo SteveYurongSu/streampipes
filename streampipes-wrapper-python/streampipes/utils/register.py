@@ -40,13 +40,18 @@ class ConsulUtils(object):
         if not port:
             raise ValueError
 
-        self.consul.agent.service.register(name='pe', service_id=app_id, address=host, port=port,
-                                           tags=['pe', 'python', app_id],
-                                           check=Check.http(
-                                               url='http://' + host + ':' + str(port),
-                                               interval=self._DEFAULT_CONSUL_CONFIG['HEALTHCHECK_INTERVAL'],
-                                               header={"Accept": ["application/json"]}
-                                           ))
+        self.consul.agent.service.register(
+            name='pe',
+            service_id=app_id,
+            address=host,
+            port=port,
+            tags=['pe', 'python', app_id],
+            check=Check.http(
+                url=f'http://{host}:{port}',
+                interval=self._DEFAULT_CONSUL_CONFIG['HEALTHCHECK_INTERVAL'],
+                header={"Accept": ["application/json"]},
+            ),
+        )
 
     def register_configs(self, config: Config):
         for key, config_item in config.config_items.items():
