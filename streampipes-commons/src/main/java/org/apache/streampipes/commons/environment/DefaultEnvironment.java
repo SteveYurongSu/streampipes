@@ -81,6 +81,36 @@ public class DefaultEnvironment implements Environment {
   }
 
   @Override
+  public StringEnvironmentVariable getTsType() {
+    return new StringEnvironmentVariable(Envs.SP_TS_TYPE);
+  }
+
+  @Override
+  public StringEnvironmentVariable getTsIotdbStorageHost() {
+    return new StringEnvironmentVariable(Envs.SP_TS_IOTDB_STORAGE_HOST);
+  }
+
+  @Override
+  public IntEnvironmentVariable getTsIotdbStoragePort() {
+    return new IntEnvironmentVariable(Envs.SP_TS_IOTDB_STORAGE_PORT);
+  }
+
+  @Override
+  public StringEnvironmentVariable getTsIotdbStorageBucket() {
+    return new StringEnvironmentVariable(Envs.SP_TS_IOTDB_STORAGE_BUCKET);
+  }
+
+  @Override
+  public StringEnvironmentVariable getTsIotdbStorageUserName() {
+    return new StringEnvironmentVariable(Envs.SP_TS_IOTDB_STORAGE_USERNAME);
+  }
+
+  @Override
+  public StringEnvironmentVariable getTsIotdbStoragePassword() {
+    return new StringEnvironmentVariable(Envs.SP_TS_IOTDB_STORAGE_PASSWORD);
+  }
+
+  @Override
   public StringEnvironmentVariable getCouchDbProtocol() {
     return new StringEnvironmentVariable(Envs.SP_COUCHDB_PROTOCOL);
   }
