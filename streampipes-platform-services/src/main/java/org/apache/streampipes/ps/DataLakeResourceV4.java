@@ -18,9 +18,12 @@
 
 package org.apache.streampipes.ps;
 
-import org.apache.streampipes.dataexplorer.DataLakeManagementV4;
-import org.apache.streampipes.dataexplorer.v4.ProvidedQueryParams;
-import org.apache.streampipes.dataexplorer.v4.query.writer.OutputFormat;
+import org.apache.streampipes.dataexplorer.DataLakeIotdbManagement;
+//import org.apache.streampipes.dataexplorer.DataLakeManagementV4;
+//import org.apache.streampipes.dataexplorer.v4.ProvidedQueryParams;
+//import org.apache.streampipes.dataexplorer.v4.query.writer.OutputFormat;
+import org.apache.streampipes.dataexplorer.iotdb.v0.ProvidedQueryParams;
+import org.apache.streampipes.dataexplorer.iotdb.v0.query.writer.OutputFormat;
 import org.apache.streampipes.model.StreamPipesErrorMessage;
 import org.apache.streampipes.model.datalake.DataLakeMeasure;
 import org.apache.streampipes.model.datalake.DataSeries;
@@ -57,37 +60,63 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_AGGREGATION_FUNCTION;
-import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_AUTO_AGGREGATE;
-import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_COLUMNS;
-import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_COUNT_ONLY;
-import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_CSV_DELIMITER;
-import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_END_DATE;
-import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_FILTER;
-import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_FORMAT;
-import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_GROUP_BY;
-import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_LIMIT;
-import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_MAXIMUM_AMOUNT_OF_EVENTS;
-import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_MISSING_VALUE_BEHAVIOUR;
-import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_OFFSET;
-import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_ORDER;
-import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_PAGE;
-import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_START_DATE;
-import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_TIME_INTERVAL;
-import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.SUPPORTED_PARAMS;
+//import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_AGGREGATION_FUNCTION;
+//import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_AUTO_AGGREGATE;
+//import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_COLUMNS;
+//import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_COUNT_ONLY;
+//import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_CSV_DELIMITER;
+//import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_END_DATE;
+//import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_FILTER;
+//import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_FORMAT;
+//import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_GROUP_BY;
+//import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_LIMIT;
+//import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_MAXIMUM_AMOUNT_OF_EVENTS;
+//import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_MISSING_VALUE_BEHAVIOUR;
+//import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_OFFSET;
+//import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_ORDER;
+//import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_PAGE;
+//import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_START_DATE;
+//import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.QP_TIME_INTERVAL;
+//import static org.apache.streampipes.dataexplorer.v4.SupportedDataLakeQueryParameters.SUPPORTED_PARAMS;
+
+import static org.apache.streampipes.dataexplorer.iotdb.v0.SupportedDataLakeQueryParameters.QP_AGGREGATION_FUNCTION;
+import static org.apache.streampipes.dataexplorer.iotdb.v0.SupportedDataLakeQueryParameters.QP_AUTO_AGGREGATE;
+import static org.apache.streampipes.dataexplorer.iotdb.v0.SupportedDataLakeQueryParameters.QP_COLUMNS;
+import static org.apache.streampipes.dataexplorer.iotdb.v0.SupportedDataLakeQueryParameters.QP_COUNT_ONLY;
+import static org.apache.streampipes.dataexplorer.iotdb.v0.SupportedDataLakeQueryParameters.QP_CSV_DELIMITER;
+import static org.apache.streampipes.dataexplorer.iotdb.v0.SupportedDataLakeQueryParameters.QP_END_DATE;
+import static org.apache.streampipes.dataexplorer.iotdb.v0.SupportedDataLakeQueryParameters.QP_FILTER;
+import static org.apache.streampipes.dataexplorer.iotdb.v0.SupportedDataLakeQueryParameters.QP_FORMAT;
+import static org.apache.streampipes.dataexplorer.iotdb.v0.SupportedDataLakeQueryParameters.QP_GROUP_BY;
+import static org.apache.streampipes.dataexplorer.iotdb.v0.SupportedDataLakeQueryParameters.QP_LIMIT;
+import static org.apache.streampipes.dataexplorer.iotdb.v0.SupportedDataLakeQueryParameters.QP_MAXIMUM_AMOUNT_OF_EVENTS;
+import static org.apache.streampipes.dataexplorer.iotdb.v0.SupportedDataLakeQueryParameters.QP_MISSING_VALUE_BEHAVIOUR;
+import static org.apache.streampipes.dataexplorer.iotdb.v0.SupportedDataLakeQueryParameters.QP_OFFSET;
+import static org.apache.streampipes.dataexplorer.iotdb.v0.SupportedDataLakeQueryParameters.QP_ORDER;
+import static org.apache.streampipes.dataexplorer.iotdb.v0.SupportedDataLakeQueryParameters.QP_PAGE;
+import static org.apache.streampipes.dataexplorer.iotdb.v0.SupportedDataLakeQueryParameters.QP_START_DATE;
+import static org.apache.streampipes.dataexplorer.iotdb.v0.SupportedDataLakeQueryParameters.QP_TIME_INTERVAL;
+import static org.apache.streampipes.dataexplorer.iotdb.v0.SupportedDataLakeQueryParameters.SUPPORTED_PARAMS;
 
 @Path("v4/datalake")
 public class DataLakeResourceV4 extends AbstractRestResource {
 
   private static final Logger logger = LoggerFactory.getLogger(DataLakeResourceV4.class);
 
-  private DataLakeManagementV4 dataLakeManagement;
+//  private DataLakeManagementV4 dataLakeManagement;
+//
+//  public DataLakeResourceV4() {
+//    this.dataLakeManagement = new DataLakeManagementV4();
+//  }
+
+  // iotdb change
+  private DataLakeIotdbManagement dataLakeManagement;
 
   public DataLakeResourceV4() {
-    this.dataLakeManagement = new DataLakeManagementV4();
+    this.dataLakeManagement = new DataLakeIotdbManagement();
   }
 
-  public DataLakeResourceV4(DataLakeManagementV4 dataLakeManagement) {
+  public DataLakeResourceV4(DataLakeIotdbManagement dataLakeManagement) {
     this.dataLakeManagement = dataLakeManagement;
   }
 

@@ -55,6 +55,18 @@ public interface Environment {
 
   StringEnvironmentVariable getTsStorageBucket();
 
+  StringEnvironmentVariable getTsType();
+
+  StringEnvironmentVariable getTsIotdbStorageHost();
+
+  IntEnvironmentVariable getTsIotdbStoragePort();
+
+  StringEnvironmentVariable getTsIotdbStorageBucket();
+
+  StringEnvironmentVariable getTsIotdbStorageUserName();
+
+  StringEnvironmentVariable getTsIotdbStoragePassword();
+
   // CouchDB env variables
 
   StringEnvironmentVariable getCouchDbProtocol();

@@ -18,7 +18,9 @@
 
 package org.apache.streampipes.rest;
 
+import org.apache.streampipes.commons.environment.Environments;
 import org.apache.streampipes.connect.management.management.AdapterMasterManagement;
+import org.apache.streampipes.dataexplorer.DataLakeIotdbManagement;
 import org.apache.streampipes.dataexplorer.DataLakeManagementV4;
 import org.apache.streampipes.extensions.api.connect.exception.AdapterException;
 import org.apache.streampipes.manager.file.FileManager;
@@ -102,6 +104,19 @@ public class ResetManagement {
         dataLakeManagementV4.removeEventProperty(measurement.getMeasureName());
       }
     });
+
+    //iotdb change
+    if("iotdb".equals(Environments.getEnvironment().getTsType().getValueOrDefault())) {
+      DataLakeIotdbManagement dataLakeIotdbManagement = new DataLakeIotdbManagement();
+      List<DataLakeMeasure> allMeasurements1 = dataLakeIotdbManagement.getAllMeasurements();
+      allMeasurements1.forEach(measurement -> {
+        boolean isSuccessDataLake = dataLakeIotdbManagement.removeMeasurement(measurement.getMeasureName());
+
+        if (isSuccessDataLake) {
+          dataLakeIotdbManagement.removeEventProperty(measurement.getMeasureName());
+        }
+      });
+    }
 
     // Remove all data views widgets
     IDataExplorerWidgetStorage widgetStorage =

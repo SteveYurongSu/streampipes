@@ -18,7 +18,8 @@
 
 package org.apache.streampipes.ps;
 
-import org.apache.streampipes.dataexplorer.DataLakeManagementV4;
+//import org.apache.streampipes.dataexplorer.DataLakeManagementV4;
+import org.apache.streampipes.dataexplorer.DataLakeIotdbManagement;
 import org.apache.streampipes.model.datalake.DataLakeMeasure;
 import org.apache.streampipes.rest.core.base.impl.AbstractAuthGuardedRestResource;
 import org.apache.streampipes.rest.shared.annotation.JacksonSerialized;
@@ -37,10 +38,17 @@ import jakarta.ws.rs.core.Response;
 @Path("/v4/datalake/measure")
 public class DataLakeMeasureResourceV4 extends AbstractAuthGuardedRestResource {
 
-  private DataLakeManagementV4 dataLakeManagement;
+//  private DataLakeManagementV4 dataLakeManagement;
+//
+//  public DataLakeMeasureResourceV4() {
+//    this.dataLakeManagement = new DataLakeManagementV4();
+//  }
+
+  //iotdb change
+  private DataLakeIotdbManagement dataLakeManagement;
 
   public DataLakeMeasureResourceV4() {
-    this.dataLakeManagement = new DataLakeManagementV4();
+    this.dataLakeManagement = new DataLakeIotdbManagement();
   }
 
   @POST

@@ -20,9 +20,11 @@ package org.apache.streampipes.dataexplorer.commons;
 
 import org.apache.streampipes.client.StreamPipesClient;
 import org.apache.streampipes.commons.environment.Environment;
+import org.apache.streampipes.commons.environment.Environments;
 import org.apache.streampipes.commons.exceptions.SpRuntimeException;
 import org.apache.streampipes.dataexplorer.commons.image.ImageStore;
 import org.apache.streampipes.dataexplorer.commons.influx.InfluxStore;
+import org.apache.streampipes.dataexplorer.commons.iotdb.IotdbStore;
 import org.apache.streampipes.model.datalake.DataLakeMeasure;
 import org.apache.streampipes.model.runtime.Event;
 
@@ -36,6 +38,7 @@ public class TimeSeriesStore {
   private static final Logger LOG = LoggerFactory.getLogger(TimeSeriesStore.class);
   private final InfluxStore influxStore;
   private ImageStore imageStore;
+  private IotdbStore iotdbStore;
 
 
   public TimeSeriesStore(Environment environment,
@@ -49,8 +52,11 @@ public class TimeSeriesStore {
       // TODO check if event properties are replaces correctly
       this.imageStore = new ImageStore(measure, environment);
     }
-
+    if(getTsType().equals("iotdb")){
+      this.iotdbStore = new IotdbStore(measure, environment);
+    }
     this.influxStore = new InfluxStore(measure, environment);
+
 
   }
 
@@ -61,8 +67,10 @@ public class TimeSeriesStore {
     }
 
     // Store event in time series database
+    if("iotdb".equals(getTsType())) {
+      this.iotdbStore.onEvent(event);
+    }
     this.influxStore.onEvent(event);
-
     return true;
   }
 
@@ -81,6 +89,18 @@ public class TimeSeriesStore {
       }
     }
 
+    if(getTsType().equals("iotdb")) {
+      this.iotdbStore.close();
+    }
     this.influxStore.close();
   }
+
+  private Environment getEnvironment() {
+    return Environments.getEnvironment();
+  }
+
+  private String getTsType(){
+    return getEnvironment().getTsType().getValueOrDefault();
+  }
+
 }
